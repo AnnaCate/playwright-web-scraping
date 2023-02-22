@@ -12,7 +12,8 @@ async function getOrgSearchResults (query) {
   const encodedQuery = encodeURIComponent(query)
   await page.goto(`https://www.google.com/search?q=${encodedQuery}`)
 
-  const searchResults = await page.$eval('#search', searchContainer => {
+  const locator = page.locator('#search')
+  const searchResults = await locator.evaluate(searchContainer => {
       const data = [];
       const anchors = searchContainer.querySelectorAll('a:not(.WlydOe):not(.jRKCUd):not(a[href*="/search"])')
       anchors.forEach(a => {

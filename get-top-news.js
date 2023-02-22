@@ -12,7 +12,9 @@ async function getTopStories (query) {
   const encodedQuery = encodeURIComponent(query)
   await page.goto(`https://www.google.com/search?q=${encodedQuery}`)
 
-  const newsArticles = await page.$$eval('.WlydOe', all_items => {
+  const locator = page.locator('.WlydOe')
+  const newsArticles = await locator.evaluateAll((all_items) => {
+    {
       const data = [];
 
       all_items.forEach(newsItem => {
@@ -28,7 +30,9 @@ async function getTopStories (query) {
         data.push({headline, href, timeframe})
       })
       return data
+  }
   })
+
   await browser.close()
   return newsArticles
 }
